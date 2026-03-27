@@ -101,6 +101,16 @@ app.post('/bot/start', authMiddleware, async (req, res) => {
       ? path.join(botDir, mainFile.filename)
       : path.join(botDir, mainFile.path, mainFile.filename);
 
+    // Use node_modules from server directory
+    const serverDir = __dirname;
+    const nodeModulesPath = path.join(serverDir, 'node_modules');
+
+    // Set NODE_PATH to find modules
+    env.NODE_PATH = nodeModulesPath;
+
+    console.log(`Starting bot ${botId} from ${mainPath}`);
+    console.log(`NODE_PATH: ${nodeModulesPath}`);
+
     // Start bot process
     const botProcess = spawn('node', [mainPath], {
       cwd: botDir,
