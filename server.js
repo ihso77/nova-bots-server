@@ -179,7 +179,7 @@ app.post('/bot/start', authMiddleware, async (req, res) => {
       await supabase.from('bot_logs').insert({
         bot_id: botId,
         log_type: 'info',
-        message: '🚀 Bot started successfully on Railway!'
+        message: '🚀 تم تشغيل البوت على خادم Nova!'
       });
     }
 
@@ -187,7 +187,7 @@ app.post('/bot/start', authMiddleware, async (req, res) => {
       success: true,
       message: 'Bot started',
       pid: botProcess.pid,
-      platform: 'railway'
+      platform: 'Nova'
     });
 
   } catch (error) {
@@ -281,5 +281,5 @@ app.get('/bots', authMiddleware, (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚂 Nova Bots Server running on port ${PORT}`);
+  console.log(`🚀 Nova Bots Server يعمل على المنفذ ${PORT}`);
 });
