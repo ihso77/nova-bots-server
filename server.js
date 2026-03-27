@@ -48,9 +48,16 @@ app.post('/bot/start', authMiddleware, async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  // Check if bot is already running
+  // Check if bot is already running - if so, restart it
   if (runningBots.has(botId)) {
-    return res.status(400).json({ error: 'Bot is already running' });
+    const existingBot = runningBots.get(botId);
+    try {
+      existingBot.process.kill('SIGTERM');
+      runningBots.delete(botId);
+      console.log(`Killed existing bot ${botId} for restart`);
+    } catch (e) {
+      console.log(`Failed to kill existing bot: ${e.message}`);
+    }
   }
 
   const botDir = `/tmp/bot-${botId}`;
